@@ -1,0 +1,15 @@
+{
+    "name": "dfs-depth-first-search",
+    "version": "0.0.1",
+    "description": "A JS implementation of graph traversal using depth-first search.",
+    "bin": {
+        "dfs": "dfs-cli.js"
+    },
+    "author": "Aaron E. Ortiz",
+    "engines": {
+        "node": "*"
+    },
+    "dependencies": {
+        "readline-sync": "^1.4.9"
+    }
+}
