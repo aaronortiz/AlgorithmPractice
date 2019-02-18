@@ -2,9 +2,9 @@
 
 const readlineSync = require('readline-sync');
 const DFSGraph = require('./dfs');
-let dontstahp = readlineSync.keyInYN("Let's make a graph, shall we?");
+let dontStahp = readlineSync.keyInYN("Let's make a graph, shall we?");
 
-if(!dontstahp) return 0;
+if(!dontStahp) return 0;
 
 const vertexCount = readlineSync.questionInt("\nHow many vertices (nodes) does your graph have?: ");
 const edgeCount =  readlineSync.questionInt("How many edges (connections) does your graph have?: ");
@@ -46,8 +46,9 @@ for(let currEdge = 1; currEdge <= edgeCount; currEdge++){
 
 }
 
-dontstahp = readlineSync.keyInYN("\nShall we traverse the graph?\n");
+dontStahp = readlineSync.keyInYN("\nShall we traverse the graph?\n");
 
-if (!dontstahp){
+if (dontStahp){
+  console.log("OK, here we go:\n");
   myGraph.dfs();
 }

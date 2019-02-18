@@ -43,8 +43,8 @@ module.exports = class Graph {
 
     this.visited = [];
 
-    for (let i = 0; i < this.vertices.length; i++) {
-      if (!(this.vertices[i] in this.visited)) {
+    for (let i in this.vertices) {
+      if (!(i in this.visited)) {
         this.visit(this.vertices[i]);
       } // endif
     } // next i
