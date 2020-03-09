@@ -14,12 +14,14 @@
 # replace it with the value of the matrix at -90 degrees, following a windmill
 # spiral of 4 points
 
-# Example:
-#   1  2  3  4  5
-#  16  .  .  .  6
-#  15  .  .  .  7
-#  14  .  .  .  8
-#  13 12 11 10  9
+# Example: (7x7)
+#  .  .  .  .  .  .  .    ==>    .  .  .  .  .  .  .
+#  .  1  2  3  4  5  .    ==>    . 16  1  2  3  4  .
+#  . 16  .  .  .  6  .    ==>    . 15  .  .  .  5  .
+#  . 15  .  .  .  7  .    ==>    . 14  .  .  .  6  .
+#  . 14  .  .  .  8  .    ==>    . 13  .  .  .  7  .
+#  . 13 12 11 10  9  .    ==>    . 12 11 10  9  8  .
+#  .  .  .  .  .  .  .    ==>    .  .  .  .  .  .  .
 
 # store 1
 # replace 1 with 5
@@ -36,4 +38,13 @@
 # continue until row - 1 has been rotated
 # move to next inner shell if possible
 
+# An even example: (4x4)
+#  .  .  .  .    ==>    .  .  .  .
+#  .  1  2  .    ==>    . 16  1  .
+#  . 16  3  .    ==>    .  3  2  .
+#  .  .  .  .    ==>    .  .  .  .
+
 # The number of layers of a n x n matrix = floor(n / 2) + n % 2
+
+# Alternately we can start from the center and move out (easier to calculate perhaps?)
+
