@@ -10,9 +10,32 @@
 # as a series of shells or layers. We would rotate the outermost shell and move
 # to the next until finishing the innermost
 
-# Within each shell, we would store the value of the matrix at each point, and
-# replace it with the value of the matrix at -90 degrees, following a windmill
-# spiral of 4 points
+# Since the matrix is square, we can treat each shell as a series of 4 lines
+# with each points corresponding with 3 others if we rotate the matrix 90 degrees.
+
+# These 4 point correspond:
+#  a  .  .  d
+#  .        .
+#  .        .
+#  b  .  .  c
+
+# As do these:
+#  .  a  .  .
+#  .        d
+#  b        .
+#  .  .  c  .
+
+# And these:
+#  .  .  a  .
+#  b        .
+#  .        d
+#  .  c  .  .
+
+# We store the value of the a, the first of these, and replace it with b, the value that is
+# at -90 degrees, and follow suit with c and d, following a windmill spiral of 4 points
+
+# Then we would move to the 4 points adjacent to the ones we just replaced, until
+# the entire shell is rotated (see example)
 
 # Example: (7x7)
 #  .  .  .  .  .  .  .    ==>    .  .  .  .  .  .  .  0
@@ -50,8 +73,51 @@
 
 # Alternately we can start from the center and move out (easier to calculate perhaps?)
 
+# ------------------------------------------------------------------------------
+def printMatrix(matrix):
+    if not matrix is None:
+        for l in range(len(matrix)):
+            print(matrix[l])
 
+
+# ------------------------------------------------------------------------------
 def rotateMatrix(matrix):
+
+    # Check for invalid matrix
+    if matrix == None or len(matrix) == 0 or not len(matrix) == len(matrix[0]):
+        return matrix
+
+    # Rotate one "onion layer" at a time, moving from out to in
+    for layer in range(len(matrix) // 2 + len(matrix) % 2):
+
+        start = layer  # Find start index (left column & top row)
+        end = len(matrix) - layer - 1  # Find end index (right column & bottom row)
+
+        for x in range(start, end):
+            # use a windmill pattern and a temp var to rotate in place
+            offset = x - start
+            temp = matrix[start][x]  # indices are assumed to be [row][col]
+            # maps value to top row from left col
+            matrix[start][x] = matrix[end - offset][start]
+            # maps value to left col from bottom row
+            matrix[end - offset][start] = matrix[end][end - offset]
+            # maps value to bottom row from right col
+            matrix[end][end - offset] = matrix[start + offset][end]
+            # maps value to right column from top row
+            matrix[start + offset][end] = temp
+
+    return matrix
+
+
+# ------------------------------------------------------------------------------
+def rotateMatrixDebug(matrix):
+
+    if len(matrix) == 0:
+        print("Matrix empty")
+        return matrix
+    elif not len(matrix) == len(matrix[0]):
+        print("Not a square matrix")
+        return matrix
 
     for layer in range(len(matrix) // 2 + len(matrix) % 2):
         topRow = layer
@@ -59,8 +125,77 @@ def rotateMatrix(matrix):
         leftCol = layer
         rightCol = len(matrix) - layer - 1
 
-        for x in range(leftCol, rightCol + 1):
-            pass
+        print(
+            "\n\n>>>>>>>>>>>>>>>>TR:",
+            topRow,
+            "BR:",
+            bottomRow,
+            "LC:",
+            leftCol,
+            "RC:",
+            rightCol,
+        )
+
+        for x in range(leftCol, rightCol):
+
+            offset = x - leftCol
+
+            print("\nx:", x, "Before:")
+            printMatrix(matrix)
+
+            print("Setting temp = {},{}({})".format(topRow, x, matrix[topRow][x]))
+            temp = matrix[topRow][x]
+
+            print(
+                "replacing {},{}({}) with {},{}({})".format(
+                    topRow,
+                    x,
+                    matrix[topRow][x],
+                    bottomRow - offset,
+                    leftCol,
+                    matrix[bottomRow - offset][leftCol],
+                )
+            )
+            matrix[topRow][x] = matrix[bottomRow - offset][leftCol]
+
+            print(
+                "replacing {},{}({}) with {},{}({})".format(
+                    bottomRow - offset,
+                    leftCol,
+                    matrix[bottomRow - offset][leftCol],
+                    bottomRow,
+                    rightCol - offset,
+                    matrix[bottomRow][rightCol - offset],
+                )
+            )
+            matrix[bottomRow - offset][leftCol] = matrix[bottomRow][rightCol - offset]
+
+            print(
+                "replacing {},{}({}) with {},{}({})".format(
+                    bottomRow,
+                    rightCol - offset,
+                    matrix[bottomRow][rightCol - offset],
+                    topRow + offset,
+                    rightCol,
+                    matrix[topRow + offset][rightCol],
+                )
+            )
+            matrix[bottomRow][rightCol - offset] = matrix[topRow + offset][rightCol]
+
+            print(
+                "replacing {},{}({}) with {},{}({})".format(
+                    topRow + offset,
+                    rightCol,
+                    matrix[topRow + x][rightCol],
+                    topRow,
+                    x,
+                    temp,
+                )
+            )
+            matrix[topRow + offset][rightCol] = temp
+            print("after:")
+            printMatrix(matrix)
+    return matrix
 
 
 if __name__ == "__main__":
@@ -70,14 +205,39 @@ if __name__ == "__main__":
         [6, 7, 8, 9, 10],
         [11, 12, 13, 14, 15],
         [16, 17, 18, 19, 20],
+        [21, 22, 23, 24, 25],
     ]
 
     rotated1 = [
-        [6, 1, 2, 3, 4],
-        [11, 7, 8, 9, 5],
-        [16, 12, 13, 14, 10],
-        [17, 18, 19, 20, 15],
+        [21, 16, 11, 6, 1],
+        [22, 17, 12, 7, 2],
+        [23, 18, 13, 8, 3],
+        [24, 19, 14, 9, 4],
+        [25, 20, 15, 10, 5],
     ]
 
     assert rotateMatrix(matrix1) == rotated1, "Matrix not rotated correctly"
+    print("5x5 matrix rotated successfully")
+    printMatrix(matrix1)
 
+    assert rotateMatrix([]) == [], "Matrix is empty"
+    assert rotateMatrix(None) == None, "Matrix is None"
+    print("Empty matrix averted")
+
+    matrix2 = [[1]]
+    rotated2 = [[1]]
+    assert rotateMatrix(matrix2) == rotated2, "Matrix not rotated correctly"
+    print("1x1 matrix 'rotated' successfully")
+    printMatrix(matrix2)
+
+    matrix3 = [[1, 2], [3, 4]]
+    rotated3 = [[3, 1], [4, 2]]
+    assert rotateMatrix(matrix3) == rotated3, "Matrix not rotated correctly"
+    print("2x2 matrix rotated successfully")
+    printMatrix(matrix3)
+
+    matrix4 = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]
+    rotated4 = [[13, 9, 5, 1], [14, 10, 6, 2], [15, 11, 7, 3], [16, 12, 8, 4]]
+    assert rotateMatrix(matrix4) == rotated4, "Matrix not rotated correctly"
+    print("4x4 matrix rotated successfully")
+    printMatrix(matrix4)
