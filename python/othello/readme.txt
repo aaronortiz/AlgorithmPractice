@@ -65,7 +65,7 @@ STORING ROTATIONS:
         3. Place a piece in one of the corners (USUALLY THE BEST MOVE)
 
     We could store all 4 rotations and 2 mirrors every time there is an 
-    opportunity to learn...but that would grow the strategy datastructure by
+    opportunity to learn...but that would grow the strategy data structure by
     powers of 16. 
     
     In order to reduce the burden of memory space and processing time we will
