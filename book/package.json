@@ -1,0 +1,19 @@
+{
+  "name": "book",
+  "version": "1.0.0",
+  "description": "Exercise from Beginning Node.js, Express and MongoDB Development",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "help",
+    "panic",
+    "shit"
+  ],
+  "author": "Aaron",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
