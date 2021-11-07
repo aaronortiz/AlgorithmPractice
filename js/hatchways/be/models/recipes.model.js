@@ -10,6 +10,29 @@ class Recipes {
     return parsedData.recipes;
   }
 
+  static write(newJSON) {
+    const rawData = JSON.stringify(newJSON);
+    const fname = `${__dirname}/data.json`;
+    fs.writeFile(fname, rawData, "utf8", () => {
+      console.log("Success");
+    });
+  }
+
+  static updateRecipe(recipe) {
+    if (Recipes.validateRecipe(recipe)) {
+      const recipes = this.read();
+      for (let i = 0; i < recipes.length; i++) {
+        if (recipes[i] && recipes[i].name && recipes[i].name === recipe.name) {
+          recipes[i] = recipe;
+          Recipes.write({
+            recipes,
+          });
+          return;
+        }
+      }
+    }
+  }
+
   static getRecipe(recipeName) {
     const recipes = this.read();
     const recipe = recipes.filter((recipe) => {
@@ -31,6 +54,29 @@ class Recipes {
       }
     }
     return recipeNames;
+  }
+
+  static validateRecipe(recipe) {
+    return (
+      recipe.name &&
+      recipe.ingredients &&
+      recipe.ingredients.length &&
+      recipe.ingredients.length > 0 &&
+      recipe.instructions &&
+      recipe.instructions.length &&
+      recipe.instructions.length > 0
+    );
+  }
+
+  static addRecipe(recipe) {
+    if (Recipes.validateRecipe) {
+      let recipes = Recipes.read();
+      recipes.push(recipe);
+      console.log(recipes);
+      Recipes.write({ recipes });
+    } else {
+      console.error("Recipe is invalid or incomplete");
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 "use strict";
 
+const { json } = require("express");
 var Recipes = require("../models/recipes.model");
 
 var express = require("express"),
@@ -18,8 +19,23 @@ router.post("/", jsonParser, (req, res, next) => {
   if (recipeExists) {
     res.status = 400;
     res.json({ error: "Recipe already exists" });
+  } else if (!Recipes.validateRecipe(req.body)) {
+    res.status = 400;
+    res.json({ error: "Recipe invalid or incomplete" });
   } else {
+    Recipes.addRecipe(req.body);
     res.status = 200;
+    res.json({});
+  }
+});
+
+router.put("/", jsonParser, (req, res, next) => {
+  const recipeExists = Recipes.getRecipe(req.body.name);
+  if (!recipeExists) {
+    res.status = 404;
+    res.json({ error: "Recipe does not exist" });
+  } else {
+    res.status = 501;
     res.json({ error: "Functionality not implemented yet" });
   }
 });
