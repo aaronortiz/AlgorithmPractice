@@ -45,7 +45,7 @@
     },
     {
       "name": "butteredBagel",
-      "ingredients": ["1 bagel", "2 tbsp butter"],
+      "ingredients": ["1 bagel", "butter"],
       "instructions": ["cut the bagel", "spread butter on bagel"]
     }
   ]

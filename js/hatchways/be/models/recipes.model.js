@@ -12,7 +12,7 @@ class Recipes {
 
   static write(recipes) {
     const rawData = JSON.stringify({ recipes });
-    const fname = `${__dirname}/data.json`;
+    const fname = path.resolve(__dirname, "data.json");
     fs.writeFile(fname, rawData, "utf8", () => {
       console.log("Success");
     });

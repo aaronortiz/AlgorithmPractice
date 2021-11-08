@@ -1,12 +1,9 @@
 "use strict";
 
-const { json } = require("express");
-var Recipes = require("../models/recipes.model");
-
-var express = require("express"),
-  router = express.Router();
-
-var jsonParser = express.json();
+var Recipes = require("../models/recipes.model"),
+  express = require("express"),
+  router = express.Router(),
+  jsonParser = express.json();
 
 router.get("/", (req, res, next) => {
   const recipeNames = Recipes.getRecipeNames();
