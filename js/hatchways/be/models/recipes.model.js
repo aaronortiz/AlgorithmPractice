@@ -10,8 +10,8 @@ class Recipes {
     return parsedData.recipes;
   }
 
-  static write(newJSON) {
-    const rawData = JSON.stringify(newJSON);
+  static write(recipes) {
+    const rawData = JSON.stringify({ recipes });
     const fname = `${__dirname}/data.json`;
     fs.writeFile(fname, rawData, "utf8", () => {
       console.log("Success");
@@ -24,9 +24,7 @@ class Recipes {
       for (let i = 0; i < recipes.length; i++) {
         if (recipes[i] && recipes[i].name && recipes[i].name === recipe.name) {
           recipes[i] = recipe;
-          Recipes.write({
-            recipes,
-          });
+          Recipes.write(recipes);
           return;
         }
       }
@@ -72,8 +70,7 @@ class Recipes {
     if (Recipes.validateRecipe) {
       let recipes = Recipes.read();
       recipes.push(recipe);
-      console.log(recipes);
-      Recipes.write({ recipes });
+      Recipes.write(recipes);
     } else {
       console.error("Recipe is invalid or incomplete");
     }

@@ -35,8 +35,9 @@ router.put("/", jsonParser, (req, res, next) => {
     res.status = 404;
     res.json({ error: "Recipe does not exist" });
   } else {
-    res.status = 501;
-    res.json({ error: "Functionality not implemented yet" });
+    Recipes.updateRecipe(req.body);
+    res.status = 204;
+    res.json({});
   }
 });
 
@@ -44,11 +45,16 @@ router.get("/details/:recipeName", (req, res, next) => {
   const recipeName = req.params.recipeName;
   const recipe = Recipes.getRecipe(recipeName);
   res.status = 200;
-  if (recipe && recipe.ingredients) {
+  if (
+    recipe &&
+    recipe.ingredients &&
+    recipe.instructions &&
+    recipe.instructions.length
+  ) {
     res.json({
       details: {
         ingredients: recipe.ingredients,
-        numSteps: recipe.ingredients.length,
+        numSteps: recipe.instructions.length,
       },
     });
   } else {
